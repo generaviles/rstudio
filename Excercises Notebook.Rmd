@@ -48,6 +48,20 @@ orthographic(img)
 
 ### Getting Fancy
 
+```{r}
+# skull stripping using FSL's Brain Extraction Tool (BET)
+library(fslr)
+img_bet <- fslbet(infile = img, retimg = TRUE)
+
+# plotting extracted brain as a mask on top of original data
+mask <- img
+in_mask <- img_bet > 0
+mask[in_mask] <- 1
+mask[!in_mask] <- NA
+orthographic(x = img, y = mask, col.y = "lightblue")
+
+```
+
 There are other more ellaborate functions that can be accomplished with other packages, like `neurobase`. This packages has the `ortho2` as an improved function to `orthographic`. On the following example an overlay of the brain as a semitransparent layer on to of the original is generated.
 
 ```{r}
