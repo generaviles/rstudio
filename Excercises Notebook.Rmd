@@ -1,0 +1,75 @@
+---
+title: "Medical Imaging"
+output: html_notebook
+---
+
+I am making this notebook as evidence of my grow in the use of R for analysis of medical related data. I hope one day I will look back at it and find it amussing.
+
+## MRI Images in R
+
+This excercise is based on a tutorial published by [R-Bloggers](https://www.r-bloggers.com/visualization-of-mri-data-in-r/). I will be trying to reproduce what the present on their post.
+We will be using the `oro.nifti` package to read into R these images.
+
+```{r}
+library(oro.nifti)
+img <- readNIfTI("Template-T1-U8-RALPFH-BR.nii.gz", reorient = FALSE)
+class(img)
+## [1] "nifti"
+## attr(,"package")
+## [1] "oro.nifti"
+dim(img)
+## [1] 182 512 512
+
+```
+
+### Visualizing the images
+
+`oro.nifti` comes with a function called `image` that allows to plot a specific slice from the MRI, the following command plots the 225th axial slice of ***img***:
+
+```{r}
+image(img, z = 225, plot.type= "single")
+
+```
+
+
+
+The same command can be used to pull all available slices in ***img***, next to each other. In this particular case, it turns out to be not very practical.
+```{r}
+image(img)
+```
+
+
+### Displaying an Orthographic Projection
+
+The function `orthographic` from the same `oro.nifti` library can be use to give an overview in 2D of the 3D structure of the brain.
+```{r}
+orthographic(img)
+```
+
+### Getting Fancy
+
+There are other more ellaborate functions that can be accomplished with other packages, like `neurobase`. This packages has the `ortho2` as an improved function to `orthographic`. On the following example an overlay of the brain as a semitransparent layer on to of the original is generated.
+
+```{r}
+library(neurobase)
+library(scales)
+ortho2(img, img, col.y = alpha("red", 0.3))
+
+```
+
+
+
+
+
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+plot(cars)
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
